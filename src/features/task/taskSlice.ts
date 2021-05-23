@@ -2,17 +2,17 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
 import { READ_TASK, POST_TASK, TASK_STATE, USER, CATEGORY } from "../types";
-import { EditRounded, LaptopWindowsSharp } from "@material-ui/icons";
 
 export const fetchAsyncGetTasks = createAsyncThunk("task/getTask", async () => {
   const res = await axios.get<READ_TASK[]>(
-    `$${process.env.REACT_APP_API_URL}/api/tasks/`,
+    `${process.env.REACT_APP_API_URL}/api/tasks/`,
     {
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       }
     }
   );
+  console.log(res.data);
   return res.data;
 });
 
@@ -50,7 +50,7 @@ export const fetchAsyncCreateCategory = createAsyncThunk(
   "task/createCategory",
   async (item: string) => {
     const res = await axios.post<CATEGORY>(
-      `${process.env.REACT_APP_API_URL}/api/category`,
+      `${process.env.REACT_APP_API_URL}/api/category/`,
       { item: item },
       {
         headers: {
@@ -176,20 +176,18 @@ export const taskSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchAsyncGetTasks.fulfilled,
+    builder.addCase(fetchAsyncGetTasks.fulfilled,
       (state, action: PayloadAction<READ_TASK[]>) => {
         return {
           ...state,
-          task: action.payload
+          tasks: action.payload
         };
       }
     );
     builder.addCase(fetchAsyncGetTasks.rejected, () => {
       window.location.href = "/";
     });
-    builder.addCase(
-      fetchAsyncGetUsers.fulfilled,
+    builder.addCase(fetchAsyncGetUsers.fulfilled,
       (state, action: PayloadAction<USER[]>) => {
         return {
           ...state,
@@ -204,8 +202,7 @@ export const taskSlice = createSlice({
           category: action.payload
         };
       });
-    builder.addCase(
-      fetchAsyncCreateCategory.fulfilled,
+    builder.addCase(fetchAsyncCreateCategory.fulfilled,
       (state, action: PayloadAction<CATEGORY>) => {
         return {
           ...state,
@@ -214,11 +211,10 @@ export const taskSlice = createSlice({
       }
     );
     builder.addCase(fetchAsyncCreateCategory.rejected, () => {
-      window.location.href = "/";
+      // window.location.href = "/";
     }
     );
-    builder.addCase(
-      fetchAsyncCreateTask.fulfilled,
+    builder.addCase(fetchAsyncCreateTask.fulfilled,
       (state, action: PayloadAction<READ_TASK>) => {
         return {
           ...state,
@@ -227,11 +223,9 @@ export const taskSlice = createSlice({
         };
       }
     );
-    builder.addCase(
-      fetchAsyncCreateTask.rejected, () => {
-        window.location.href = "/";
-      }
-    );
+    builder.addCase(fetchAsyncCreateTask.rejected, () => {
+      window.location.href = "/";
+    });
     builder.addCase(
       fetchAsyncUpdateTask.fulfilled,
       (state, action: PayloadAction<READ_TASK>) => {
@@ -242,8 +236,7 @@ export const taskSlice = createSlice({
           selectedTask: initialState.selectedTask
         };
       });
-    builder.addCase(
-      fetchAsyncDeleteTask.fulfilled,
+    builder.addCase(fetchAsyncDeleteTask.fulfilled,
       (state, action: PayloadAction<number>) => {
         return {
           ...state,
@@ -253,11 +246,9 @@ export const taskSlice = createSlice({
         };
       }
     );
-    builder.addCase(
-      fetchAsyncDeleteTask.rejected, () => {
-        window.location.href = "/";
-      }
-    );
+    builder.addCase(fetchAsyncDeleteTask.rejected, () => {
+      window.location.href = "/";
+    });
   }
 
 });
@@ -266,5 +257,6 @@ export const { editTask, selectTask } = taskSlice.actions;
 export const selectSelectedTask = (state: RootState) => state.task.selectedTask;
 export const selectEditedTask = (state: RootState) => state.task.editedTask;
 export const selectTasks = (state: RootState) => state.task.tasks;
+export const selectUsers = (state: RootState) => state.task.users;
 export const selectCategory = (state: RootState) => state.task.category;
 export default taskSlice.reducer;

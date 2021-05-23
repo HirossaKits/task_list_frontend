@@ -47,6 +47,7 @@ const Auth: React.FC = () => {
   return (
     <div className={styles.auth__root}>
       <h1>{isLoginView ? "Login" : "Register"}</h1>
+
       <br />
       <TextField
         InputLabelProps={{ shrink: true }}

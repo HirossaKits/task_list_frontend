@@ -1,3 +1,5 @@
+import TaskList from "./task/TaskList";
+
 /*authSlice.ts*/
 export interface LOGIN_USER {
   id: number;
@@ -77,4 +79,10 @@ export interface TASK_STATE {
   selectedTask: READ_TASK;
   users: USER[];
   category: CATEGORY[];
+}
+/*TaskList.tsx*/
+export interface SORT_STATE {
+  rows: READ_TASK[];
+  order: "desc" | "asc";
+  activeKey: string;
 }

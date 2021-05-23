@@ -48,7 +48,7 @@ export const fetchAsyncGetMyProf = createAsyncThunk(
   "auth/loginuser",
   async () => {
     const res = await axios.get<LOGIN_USER>(
-      `${process.env.REACT_APP_API_URL}/api/loginuse/`,
+      `${process.env.REACT_APP_API_URL}/api/loginuser/`,
       {
         headers: {
           Authorization: `JWT ${localStorage.localJWT}`,
@@ -96,7 +96,7 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
   async (profile: POST_PROFILE) => {
     const uploadData = new FormData();
     profile.img && uploadData.append("img", profile.img, profile.img.name);
-    const res = await axios.post(
+    const res = await axios.put(
       `${process.env.REACT_APP_API_URL}/api/profile/${profile.id}/`,
       uploadData,
       {
@@ -153,6 +153,17 @@ export const authSlice = createSlice(
           return {
             ...state,
             profiles: action.payload,
+          };
+        }
+      );
+      builder.addCase(
+        fetchAsyncUpdateProf.fulfilled,
+        (state, action: PayloadAction<PROFILE>) => {
+          return {
+            ...state,
+            profiles: state.profiles.map(prof =>
+              prof.id === action.payload.id ? action.payload : prof
+            )
           };
         }
       );

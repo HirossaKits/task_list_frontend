@@ -146,24 +146,25 @@ const TaskList: React.FC = () => {
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>
-              {columns.map(
-                (column, colIndex) =>
-                  (column === "task" ||
-                    column === "status" ||
-                    column === "category" ||
-                    column === "estimate" ||
-                    column === "responsible" ||
-                    column === "owner") && (
-                    <TableCell align="center" key={colIndex}>
-                      <TableSortLabel
-                        active={state.activeKey === column}
-                        onClick={() => handleClickSortColumn(column)}
-                      >
-                        <strong>{column}</strong>
-                      </TableSortLabel>
-                    </TableCell>
-                  )
-              )}
+              {tasks[0] &&
+                columns.map(
+                  (column, colIndex) =>
+                    (column === "task" ||
+                      column === "status" ||
+                      column === "category" ||
+                      column === "estimate" ||
+                      column === "responsible" ||
+                      column === "owner") && (
+                      <TableCell align="center" key={colIndex}>
+                        <TableSortLabel
+                          active={state.activeKey === column}
+                          onClick={() => handleClickSortColumn(column)}
+                        >
+                          <strong>{column}</strong>
+                        </TableSortLabel>
+                      </TableCell>
+                    )
+                )}
               <TableCell></TableCell>
             </TableRow>
           </TableHead>

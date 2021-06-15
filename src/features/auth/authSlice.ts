@@ -15,6 +15,7 @@ import { profile } from "console";
 export const fetchAsyncLogin = createAsyncThunk(
   "auth/login",
   async (auth: CRED) => {
+    console.log(`${process.env.REACT_APP_API_URL}/authen/jwt/create/`);
     const res = await axios.post<JWT>(
       `${process.env.REACT_APP_API_URL}/authen/jwt/create/`,
       auth,
